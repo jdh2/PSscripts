@@ -1,5 +1,5 @@
 $ErrorActionPreference = "SilentlyContinue"
-$logfolder = "$env:programdata\DisableIPv6\"
+$logfolder = "$env:programdata\DisableIPv6"
 $logfile = "$logfolder\DisableIPv6.log"
 $regvalue = "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters\DisableComponents"
 
@@ -11,10 +11,10 @@ if (!(Test-Path -Path $logfolder)) {
 #Check if the logfile already exists and execute code if it does not
 if (!(Test-Path -Path $logfile)) {
 
-    #Check if the DisabledComponents registry value exists, if it does not, create it and create a text file
+    #Check if the DisabledComponents registry value exists, if it does not, create it and create a log file
     if (!(Test-Path -path $regvalue)) {
         New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" -Name DisabledComponents -Value 255 -PropertyType DWord
-        New-Item -ItemType File -Path "$logfolder\DisableIPv6.txt"
+        New-Item -ItemType File -Path $logfile
         
     }
 
