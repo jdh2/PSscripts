@@ -7,19 +7,18 @@ $logfile = "$logfolder\RemoveUpdateToVersion.log"
 $regpath = "HKLM:\SOFTWARE\Microsoft\Office\ClickToRun\Configuration"
 $regvalue = "UpdateToVersion"
 
+Start-Transcript -Path $LogFile -Append -Verbose
+
 #Check if the logfolder directory exists, if not create it
 if (!(Test-Path -Path $logfolder)) {
     New-Item -Path $logfolder -ItemType Directory -Force
 }
 
 #Check if the logfile already exists and execute code if it does not
-if (!(Test-Path -Path $logfile)) {
 
     #Check if the DisabledComponents registry value exists, if it does not, create it and create a log file
-    if (!(Test-Path -path "$regpath\$regvalue")) {
-        Remove-ItemProperty -Path $regpath -Name $regvalue
-        New-Item -ItemType File -Path $logfile
-        
-    }
-
+if (Get-ItemProperty -Path $regpath -Name $regvalue) {
+    Remove-ItemProperty -Path $regpath -Name $regvalue -Verbose
 }
+
+Stop-Transcript
