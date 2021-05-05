@@ -2,7 +2,7 @@ param(
 # Define parameters and values
 [string]$newWebLanguage="en-us",
 [bool]$newDisableGpu=$true,
-[string]$desktopConfigFile=“$env:userprofile\\AppData\Roaming\Microsoft\Teams\desktop-config.json”,
+[string]$desktopConfigFile="$env:userprofile\\AppData\Roaming\Microsoft\Teams\desktop-config.json",
 [string]$cookieFile="$env:userprofile\\AppData\Roaming\Microsoft\teams\Cookies",
 [string]$registryPath="HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
 [string]$registryDisplayName="Microsoft Teams",
@@ -14,7 +14,7 @@ $registryPathCheck = Get-ChildItem -Path $registryPath -Recurse | Get-ItemProper
 #Check if Teams process is running
 $processCheck = Get-Process $processName -ErrorAction SilentlyContinue
 #Read the Teams desktop config file and convert from JSON
-$config = (Get-Content -Path $desktopConfigFile | ConvertFrom-Json -Depth 5 -ErrorAction SilentlyContinue)
+$config = (Get-Content -Path $desktopConfigFile | ConvertFrom-Json -ErrorAction SilentlyContinue)
 #Check if required parameter value is already set within Teams desktop config file
 $configCheck = $config | Where-Object {($_.appPreferenceSettings.disableGpu -ne $newDisableGpu)} -ErrorAction SilentlyContinue
 #Check if Teams cookie file exists
@@ -40,7 +40,7 @@ if ($registryPathCheck -and $configCheck)
 {
     $config.currentWebLanguage=$newWebLanguage
     $config.appPreferenceSettings.disableGpu=$newDisableGpu
-    $config | ConvertTo-Json -Depth 5 -Compress | Set-Content -Path $desktopConfigFile -Force
+    $config | ConvertTo-Json -Compress | Set-Content -Path $desktopConfigFile -Force
 
 #1-If Teams process is stopped ($processCheckFinal is null)
 #2-If Teams cookie file exists ($cookieFileCheck not null)
