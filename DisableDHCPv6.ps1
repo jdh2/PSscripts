@@ -1,0 +1,5 @@
+#Creates firewall rules to block DHCPv6 inbound and outbound
+New-NetFirewallRule -PolicyStore PersistentStore -Name "Block DHCPv6-In" -DisplayName "Block DHCPv6-In" -Description "Blocks DHCPv6 requests" -Group "@FirewallAPI.dll,-25000" -Enabled 1 -Profile Any -Direction Inbound -Action Block -EdgeTraversalPolicy Block -LooseSourceMapping 0 -LocalOnlyMapping 0 -Protocol 17 -LocalPort 546 -RemotePort 547 -Program "%SystemRoot%\system32\svchost.exe" -Service dhcp
+New-NetFirewallRule -PolicyStore PersistentStore -Name "Block DHCPv6-Out" -DisplayName "Block DHCPv6-Out" -Description "Blocks DHCPv6 requests" -Group "@FirewallAPI.dll,-25000" -Enabled 1 -Profile Any -Direction Outbound -Action Block -EdgeTraversalPolicy Block -LooseSourceMapping 0 -LocalOnlyMapping 0 -Protocol 17 -LocalPort 546 -RemotePort 547 -Program "%SystemRoot%\system32\svchost.exe" -Service dhcp
+
+ipconfig /release6
